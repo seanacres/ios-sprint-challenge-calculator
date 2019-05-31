@@ -45,7 +45,8 @@ class CalculatorBrain {
     
     func calculateIfPossible() -> String? {
         
-        var result: String = ""
+        var resultString: String = ""
+        var resultNum: Double = 0.0
         
         if operand1String != "" && operand2String != "" {
             if let operatorType = operatorType {
@@ -54,14 +55,14 @@ class CalculatorBrain {
                 
                 switch operatorType {
                 case .addition:
-                    result = String(operandNum1 + operandNum2)
+                    resultNum = operandNum1 + operandNum2
                 case .subtraction:
-                    result = String(operandNum1 - operandNum2)
+                    resultNum = operandNum1 - operandNum2
                 case .multiplication:
-                    result = String(operandNum1 * operandNum2)
+                    resultNum = operandNum1 * operandNum2
                 default:
                     if operandNum2 != 0 {
-                        result = String(operandNum1 / operandNum2)
+                        resultNum = operandNum1 / operandNum2
                     } else {
                         return "Error"
                     }
@@ -70,6 +71,12 @@ class CalculatorBrain {
             
         }
         
-        return result
+        if resultNum.truncatingRemainder(dividingBy: 1) == 0 {
+            resultString = String(Int(resultNum))
+        } else {
+            resultString = String(resultNum)
+        }
+        
+        return resultString
     }
 }
