@@ -22,8 +22,14 @@ class CalculatorViewController: UIViewController {
     // MARK: - Action Handlers
     
     @IBAction func operandTapped(_ sender: UIButton) {
-        
         if let digitTapped = sender.titleLabel?.text {
+            if digitTapped == "." {
+                if let decimalThere = outputLabel.text?.contains(".") {
+                    if decimalThere {
+                        return
+                    }
+                }
+            }
             outputLabel.text = currentCalc?.addOperandDigit(digitTapped)
         }
     }
