@@ -11,6 +11,9 @@ import UIKit
 class CalculatorViewController: UIViewController {
     
     var currentCalc: CalculatorBrain?
+    var wasOperatorTapped: Bool = false
+    var wasOperandTapped: Bool = false
+    var isSignPositive: Bool = true
     
     @IBOutlet weak var outputLabel: UILabel!
     
@@ -22,6 +25,9 @@ class CalculatorViewController: UIViewController {
     // MARK: - Action Handlers
     
     @IBAction func operandTapped(_ sender: UIButton) {
+        wasOperandTapped = true
+        wasOperatorTapped = false
+        
         if let digitTapped = sender.titleLabel?.text {
             if digitTapped == "." {
                 if let decimalThere = outputLabel.text?.contains(".") {
@@ -35,6 +41,9 @@ class CalculatorViewController: UIViewController {
     }
     
     @IBAction func operatorTapped(_ sender: UIButton) {
+        wasOperatorTapped = true
+        wasOperandTapped = false
+        
         if let operatorTapped = sender.titleLabel?.text {
             currentCalc?.setOperator(operatorTapped)
         }
@@ -50,24 +59,29 @@ class CalculatorViewController: UIViewController {
     @IBAction func clearTapped(_ sender: UIButton) {
         clearTransaction()
         outputLabel.text = "0"
+        isSignPositive = true
+        wasOperatorTapped = false
+        wasOperandTapped = false
     }
     
     @IBAction func signTapped(_ sender: UIButton) {
+        isSignPositive = !isSignPositive
+        
         if var outputLabelText = outputLabel.text {
-            if currentCalc?.operatorType == nil && currentCalc?.operand2String == "" {
-                if outputLabelText.contains("-") {
+            if !wasOperatorTapped || wasOperandTapped {
+                if isSignPositive && outputLabelText.contains("-") {
                     outputLabelText.remove(at: outputLabelText.startIndex)
+                    outputLabel.text = outputLabelText
+                    currentCalc?.reverseSign()
                 } else {
                     outputLabelText.insert("-", at: outputLabelText.startIndex)
+                    outputLabel.text = outputLabelText
+                    currentCalc?.reverseSign()
                 }
-                currentCalc?.reverseSign()
-                outputLabel.text = outputLabelText
-            } else if currentCalc?.operatorType != nil && currentCalc?.operand2String == "" {
-                currentCalc?.reverseSign()
+            
             }
         }
     }
-    
     
     // MARK: - Private
     
