@@ -79,4 +79,20 @@ class CalculatorBrain {
         
         return resultString
     }
+    
+    func reverseSign() {
+        if operatorType == nil {
+            if operand1String.contains("-") {
+                operand1String.remove(at: operand1String.startIndex)
+            } else {
+                operand1String.insert("-", at: operand1String.startIndex)
+            }
+        } else {
+            if operand2String.contains("-") {
+                operand2String.remove(at: operand2String.startIndex)
+            } else {
+                operand2String.insert("-", at: operand2String.startIndex)
+            }
+        }
+    }
 }
