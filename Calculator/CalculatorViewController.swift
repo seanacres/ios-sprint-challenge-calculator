@@ -54,13 +54,17 @@ class CalculatorViewController: UIViewController {
     
     @IBAction func signTapped(_ sender: UIButton) {
         if var outputLabelText = outputLabel.text {
-            if outputLabelText.contains("-") {
-                outputLabelText.remove(at: outputLabelText.startIndex)
-            } else {
-                outputLabelText.insert("-", at: outputLabelText.startIndex)
+            if currentCalc?.operatorType == nil && currentCalc?.operand2String == "" {
+                if outputLabelText.contains("-") {
+                    outputLabelText.remove(at: outputLabelText.startIndex)
+                } else {
+                    outputLabelText.insert("-", at: outputLabelText.startIndex)
+                }
+                currentCalc?.reverseSign()
+                outputLabel.text = outputLabelText
+            } else if currentCalc?.operatorType != nil && currentCalc?.operand2String == "" {
+                currentCalc?.reverseSign()
             }
-            currentCalc?.reverseSign()
-            outputLabel.text = outputLabelText
         }
     }
     
