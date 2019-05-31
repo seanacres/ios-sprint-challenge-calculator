@@ -38,6 +38,7 @@ class CalculatorViewController: UIViewController {
         if let calculation = currentCalc?.calculateIfPossible() {
             outputLabel.text = calculation
         }
+        currentCalc = CalculatorBrain.init()
     }
     
     @IBAction func clearTapped(_ sender: UIButton) {
